@@ -24,9 +24,22 @@ namespace PolimorfizamPrimer
 		{
 			InitializeComponent();
 
+			Kvadrat k1 = new Kvadrat();
+			Kvadrat k2 = new Kvadrat();
+			k1.a = 5;
+			k2.a = 5;
+			
+			if (k1.GetHashCode() == k2.GetHashCode())
+			{
+				MessageBox.Show("Isti su!");
+			}else
+			{
+				MessageBox.Show("Nisu :/");
+			}
+
 			Kvadrat k = new Kvadrat();
 			k.a = 5;
-
+			
 			Pravougaonik p = new Pravougaonik();
 			p.a = 2;
 			p.b = 3;
@@ -41,8 +54,7 @@ namespace PolimorfizamPrimer
 
 			foreach (Figura f in svi)
 			{
-				MessageBox.Show(f.Povrsina().ToString());
-				MessageBox.Show(f.Obim().ToString());
+				MessageBox.Show($"{f} P:{f.Povrsina()} O:{f.Obim()}");
 			}
 		}
 	}
@@ -62,6 +74,11 @@ namespace PolimorfizamPrimer
 
 		public override decimal Povrsina() => a * a;
 		public override decimal Obim() => 4 * a;
+
+		public override string ToString() => $"kvadrat: a:{a}";
+
+		public override bool Equals(object obj) => obj is Kvadrat k && k.a == a;
+		
 	}
 
 	public class Pravougaonik : Kvadrat
@@ -70,6 +87,8 @@ namespace PolimorfizamPrimer
 
 		public override decimal Povrsina() => a * b;
 		public new decimal Obim() => 2*a + 2*b;
+
+		public override string ToString() => $"pravougaonik: a:{a} b:{b}";
 	}
 
 	public class Krug : Figura
@@ -78,5 +97,7 @@ namespace PolimorfizamPrimer
 
 		public override decimal Povrsina() => (decimal)Math.PI * Poluprecnik * Poluprecnik;
 		public override decimal Obim() => (decimal)Math.PI * 2 * Poluprecnik;
+
+		public override string ToString() => $"krug: pp:{Poluprecnik}";
 	}
 }
