@@ -28,8 +28,10 @@ namespace PolimorfizamPrimer
 			Kvadrat k2 = new Kvadrat();
 			k1.a = 5;
 			k2.a = 5;
-			
-			if (k1.GetHashCode() == k2.GetHashCode())
+			MessageBox.Show(k1.GetHashCode().ToString());
+			MessageBox.Show(((decimal)5).GetHashCode().ToString());
+
+			if (k1.Equals(k2))
 			{
 				MessageBox.Show("Isti su!");
 			}else
@@ -47,38 +49,35 @@ namespace PolimorfizamPrimer
 			Krug o = new Krug();
 			o.Poluprecnik = 10;
 
-			List<Figura> svi = new List<Figura>();
+			List<IFigura> svi = new List<IFigura>();
 			svi.Add(k);
 			svi.Add(p);
 			svi.Add(o);
 
-			foreach (Figura f in svi)
+			foreach (IFigura f in svi)
 			{
 				MessageBox.Show($"{f} P:{f.Povrsina()} O:{f.Obim()}");
 			}
 		}
 	}
 
-	public abstract class Figura
+	public interface IFigura
 	{
-		public abstract decimal Povrsina();
-
-		public abstract decimal Obim();
-
-		public double DajPi() => Math.PI;
+		decimal Povrsina();
+		decimal Obim();
 	}
 	
-	public class Kvadrat : Figura
+	public class Kvadrat : IFigura
 	{
 		public decimal a;
 
-		public override decimal Povrsina() => a * a;
-		public override decimal Obim() => 4 * a;
+		public virtual decimal Povrsina() => a * a;
+		public virtual decimal Obim() => 4 * a;
 
 		public override string ToString() => $"kvadrat: a:{a}";
 
 		public override bool Equals(object obj) => obj is Kvadrat k && k.a == a;
-		
+		public override int GetHashCode() => (GetType().ToString() + a).GetHashCode();
 	}
 
 	public class Pravougaonik : Kvadrat
@@ -91,12 +90,12 @@ namespace PolimorfizamPrimer
 		public override string ToString() => $"pravougaonik: a:{a} b:{b}";
 	}
 
-	public class Krug : Figura
+	public class Krug : IFigura
 	{
 		public decimal Poluprecnik;
 
-		public override decimal Povrsina() => (decimal)Math.PI * Poluprecnik * Poluprecnik;
-		public override decimal Obim() => (decimal)Math.PI * 2 * Poluprecnik;
+		public decimal Povrsina() => (decimal)Math.PI * Poluprecnik * Poluprecnik;
+		public decimal Obim() => (decimal)Math.PI * 2 * Poluprecnik;
 
 		public override string ToString() => $"krug: pp:{Poluprecnik}";
 	}
